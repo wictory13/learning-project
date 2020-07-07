@@ -1,5 +1,6 @@
 import * as React from "react";
 
+
 class Field extends React.Component {
     constructor(props) {
         super(props);
@@ -8,94 +9,60 @@ class Field extends React.Component {
         };
     }
 
-    onContentChange(e) {
-        this.props.onBlur(this.state.value)
-    };
-
-    onChange (e) {
-        this.setState({ value: e.target.value })
+    endContentChange(e) {
+        this.props.onBlur();
     };
 
     render() {
-        const {autoFocus, ...rest} = this.props
-
-
         return (
             <input
-                onChange={this.onChange.bind(this)}
-                onBlur={this.onContentChange.bind(this)}
                 value={this.state.value}
+                onChange={this.props.onChange}
+                onBlur={this.endContentChange.bind(this)}
                 type="text"
             />
         )
     }
 }
 
+/*
+
+*/
 export default class EditableField extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
-
-        // init counter
-        this.count = 0
-
-        // init state
         this.state = {
             edit: false,
-
         }
-        console.log(this.props)
     }
 
-    componentWillUnmount () {
-        // cancel click callback
-        if (this.timeout) clearTimeout(this.timeout)
-    }
-
-    handleClick (e) {
-        // cancel previous callback
-        if (this.timeout) clearTimeout(this.timeout)
-
-        // increment count
-        this.count++
-
-        // schedule new callback  [timeBetweenClicks] ms after last click
-        this.timeout = setTimeout(() => {
-            // listen for double clicks
-            if (this.count === 2) {
-                // turn on edit mode
-                this.setState({
-                    edit: true,
-                })
-            }
-
-            // reset count
-            this.count = 0
-        }, 250) // 250 ms
-    }
-
-    handleBlur (e) {
-        // handle saving here
-        console.log(e);
-        // close edit mode
+    handleDoubleClick(e) {
         this.setState({
-            edit: false,
+            edit: true,
         })
     }
 
-    render () {
+    handleEndEdit(e) {
+        this.setState({
+            edit: false,
+        });
+        this.props.onEditTodo();
+    }
+
+    render() {
         if (this.state.edit) {
-            // edit mode
             return (
                 <Field
+                    onChange={this.props.onChange}
                     autoFocus
-                    onBlur={this.handleBlur.bind(this)}
+                    onBlur={this.handleEndEdit.bind(this)}
+                    value={this.props.value}
                 />
             )
         } else {
-            // view mode
             return (
                 <span
-                    onClick={this.handleClick.bind(this)}
+                    onDoubleClick={this.handleDoubleClick.bind(this)}
                 >
           {this.props.value}
         </span>
