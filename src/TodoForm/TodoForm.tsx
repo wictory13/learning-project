@@ -1,16 +1,21 @@
 import * as React from "react";
 
-/**
- * onAddTodo: (value: string) => void
- */
-export class TodoForm extends React.Component {
-    constructor(props) {
+interface TodoFormPropType {
+    onAddTodo: (value: string) => void
+}
+
+export class TodoForm extends React.Component<TodoFormPropType, {}> {
+    private readonly input: React.RefObject<HTMLInputElement> = React.createRef();
+
+    constructor(props: TodoFormPropType) {
         super(props);
-        this.input = React.createRef();
         this.keyPressed = this.keyPressed.bind(this);
     }
 
-    keyPressed(event) {
+    keyPressed(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (this.input.current == undefined) {
+            return;
+        }
         if (event.key === "Enter") {
             let newTodo = this.input.current.value;
             if (newTodo) {

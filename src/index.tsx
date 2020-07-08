@@ -1,13 +1,17 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import {TodoHeader} from "./TodoHeader/todoHeader";
-import {TodoForm} from "./TodoForm/todoForm";
+import {TodoForm} from "./TodoForm/TodoForm";
 import {TodoListStates} from "./TodoStates/todoListStates";
 
 let id = 1;
 
-class TodoApp extends React.Component {
-    constructor(props) {
+interface TodoAppStateType {
+    todos: { id: number, value: string, isDone: boolean }[]
+}
+
+class TodoApp extends React.Component<{}, TodoAppStateType> {
+    constructor(props: {}) {
         super(props);
         this.handleAddTodo = this.handleAddTodo.bind(this);
         this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
@@ -16,7 +20,7 @@ class TodoApp extends React.Component {
         this.state = {todos: []};
     }
 
-    handleAddTodo(todo) {
+    handleAddTodo(todo: string) {
         const newTodo = {
             id: id,
             value: todo,
@@ -26,7 +30,7 @@ class TodoApp extends React.Component {
         this.setState({todos: [...this.state.todos, newTodo]});
     }
 
-    handleCheckTodo(todo) {
+    handleCheckTodo(todo: { id: number, value: string, isDone: boolean }) {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -39,7 +43,7 @@ class TodoApp extends React.Component {
         });
     }
 
-    handleEditTodo(todo, newValue) {
+    handleEditTodo(todo: { id: number, value: string, isDone: boolean }, newValue: string) {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -52,7 +56,7 @@ class TodoApp extends React.Component {
         })
     }
 
-    handleDeleteTodo(todo) {
+    handleDeleteTodo(todo: { id: number, value: string, isDone: boolean }) {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),

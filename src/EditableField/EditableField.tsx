@@ -2,18 +2,29 @@ import * as React from "react";
 
 /**
  * value: string
- * onChange: (e) => void
+ * onChange: () => void
  * onEndEdit: () => void
  */
-class Field extends React.Component {
-    constructor(props) {
+
+interface FieldPropsType {
+    value: string,
+    onChange: (e: string) => void,
+    onEndEdit: () => void
+}
+
+interface FieldStateType {
+    value: string
+}
+
+class Field extends React.Component<FieldPropsType, FieldStateType> {
+    constructor(props: FieldPropsType) {
         super(props);
         this.state = {
             value: this.props.value
         };
     }
 
-    endContentChange(e) {
+    endContentChange() {
         this.props.onEndEdit();
     };
 
@@ -21,7 +32,7 @@ class Field extends React.Component {
         return (
             <input
                 defaultValue={this.state.value}
-                onChange={this.props.onChange}
+                onChange={event => this.props.onChange(event.target.value)}
                 onBlur={this.endContentChange.bind(this)}
                 type="text"
             />
@@ -34,21 +45,32 @@ class Field extends React.Component {
  * onChange: (e) => void
  * onEditTodo: () => void
  */
-export default class EditableField extends React.Component {
-    constructor(props) {
+
+interface EditableFieldPropsType {
+    value: string,
+    onChange: (e: string) => void,
+    onEditTodo: () => void
+}
+
+interface EditableFieldStateType {
+    edit: boolean
+}
+
+export default class EditableField extends React.Component<EditableFieldPropsType, EditableFieldStateType> {
+    constructor(props: EditableFieldPropsType) {
         super(props)
         this.state = {
             edit: false,
         }
     }
 
-    handleDoubleClick(e) {
+    handleDoubleClick() {
         this.setState({
             edit: true,
         })
     }
 
-    handleEndEdit(e) {
+    handleEndEdit() {
         this.setState({
             edit: false,
         });
@@ -59,11 +81,11 @@ export default class EditableField extends React.Component {
         if (this.state.edit) {
             return (
                 <Field
-                    onChange={this.props.onChange}
+                    onChange={(nextValue) => this.props.onChange(nextValue)}
                     onEndEdit={this.handleEndEdit.bind(this)}
                     value={this.props.value}
                 />
-            )
+            );
         } else {
             return (
                 <span
@@ -71,7 +93,7 @@ export default class EditableField extends React.Component {
                 >
           {this.props.value}
         </span>
-            )
+            );
         }
     }
 }

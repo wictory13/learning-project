@@ -8,8 +8,19 @@ import "./todo.css"
  * onCheckTodo: () => void
  * onEditTodo: (nextName: string) => void
  */
-export class Todo extends React.Component {
-    constructor(props) {
+interface TodoPropsType {
+    todo: { id: number, value: string, isDone: boolean },
+    onDeleteTodo: () => void,
+    onCheckTodo: () => void,
+    onEditTodo: (nextName: string) => void
+}
+
+interface TodoStateType {
+    text: string
+}
+
+export class Todo extends React.Component<TodoPropsType, TodoStateType> {
+    constructor(props: TodoPropsType) {
         super(props);
         this.onDeleteTodo = this.onDeleteTodo.bind(this);
         this.onCheckTodo = this.onCheckTodo.bind(this);
@@ -43,7 +54,7 @@ export class Todo extends React.Component {
                 {mark}
                 <EditableField
                     value={this.state.text}
-                    onChange={(e) => this.setState({text: e.target.value})}
+                    onChange={(value) => this.setState({text: value})}
                     onEditTodo={this.onEditTodo}
                 />
                 <button onClick={this.onDeleteTodo}>x</button>

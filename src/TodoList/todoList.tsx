@@ -7,9 +7,16 @@ import {Todo} from "../Todo/todo";
  * onCheckTodo: () => void
  * onEditTodo: (nextName: string) => void
  */
-export class TodoList extends React.Component {
+
+interface TodoListPropsType {
+    todos: {id: number, value: string, isDone: boolean}[],
+    onDeleteTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
+    onCheckTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
+    onEditTodo: (todo: { id: number; value: string; isDone: boolean }, nextName: string) => void
+}
+
+export class TodoList extends React.Component<TodoListPropsType> {
     render() {
-        console.log(this.props.todos)
         const todos = this.props.todos.map((todo) => {
             return (<Todo todo={todo} key={todo.id} onDeleteTodo={() => this.props.onDeleteTodo(todo)}
                           onCheckTodo={() => this.props.onCheckTodo(todo)}

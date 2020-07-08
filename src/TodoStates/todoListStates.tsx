@@ -7,8 +7,20 @@ import {TodoList} from "../TodoList/todoList"
  * onCheckTodo: () => void
  * onEditTodo: (nextName: string) => void
  */
-export class TodoListStates extends React.Component {
-    constructor(props) {
+
+interface TodoListStatesPropsType {
+    todos: {id: number, value: string, isDone: boolean}[],
+    onDeleteTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
+    onCheckTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
+    onEditTodo: (todo: { id: number; value: string; isDone: boolean }, nextName: string) => void
+}
+
+interface TodoListStatesStateType {
+    selected: string
+}
+
+export class TodoListStates extends React.Component<TodoListStatesPropsType, TodoListStatesStateType> {
+    constructor(props: TodoListStatesPropsType) {
         super(props);
         this.state = {
             selected: 'all'
