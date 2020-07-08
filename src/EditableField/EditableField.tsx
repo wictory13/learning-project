@@ -1,11 +1,5 @@
 import * as React from "react";
 
-/**
- * value: string
- * onChange: () => void
- * onEndEdit: () => void
- */
-
 interface FieldPropsType {
     value: string,
     onChange: (e: string) => void,
@@ -39,12 +33,6 @@ class Field extends React.Component<FieldPropsType, FieldStateType> {
         )
     }
 }
-
-/**
- * value: string
- * onChange: (e) => void
- * onEditTodo: () => void
- */
 
 interface EditableFieldPropsType {
     value: string,

@@ -2,12 +2,6 @@ import * as React from "react";
 import EditableField from "../EditableField/EditableField";
 import "./todo.css"
 
-/**
- * todo: {id: number, value: string, isDone: boolean}
- * onDeleteTodo: () => void
- * onCheckTodo: () => void
- * onEditTodo: (nextName: string) => void
- */
 interface TodoPropsType {
     todo: { id: number, value: string, isDone: boolean },
     onDeleteTodo: () => void,

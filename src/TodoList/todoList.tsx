@@ -1,13 +1,6 @@
 import * as React from "react";
 import {Todo} from "../Todo/todo";
 
-/**
- * todos: []
- * onDeleteTodo: () => void
- * onCheckTodo: () => void
- * onEditTodo: (nextName: string) => void
- */
-
 interface TodoListPropsType {
     todos: {id: number, value: string, isDone: boolean}[],
     onDeleteTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
