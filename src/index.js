@@ -4,90 +4,71 @@ import {TodoHeader} from "./TodoHeader/todoHeader";
 import {TodoForm} from "./TodoForm/todoForm";
 import {TodoListStates} from "./TodoStates/todoListStates";
 
-
 let id = 1;
 
 class TodoApp extends React.Component {
     constructor(props) {
         super(props);
-        this.addTodo = this.addTodo.bind(this);
-        this.removeTodo = this.removeTodo.bind(this);
-        this.onClickTodo = this.onClickTodo.bind(this);
-        this.editTodo = this.editTodo.bind(this);
-        this.state = {todos: [], undoneTodos: [], doneTodos: []};
+        this.handleAddTodo = this.handleAddTodo.bind(this);
+        this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
+        this.handleCheckTodo = this.handleCheckTodo.bind(this);
+        this.handleEditTodo = this.handleEditTodo.bind(this);
+        this.state = {todos: []};
     }
 
-    addTodo(todo) {
+    handleAddTodo(todo) {
         const newTodo = {
             id: id,
             value: todo,
             isDone: false
         };
         id++;
-        this.setState({todos: [...this.state.todos, newTodo], undoneTodos: [...this.state.undoneTodos, newTodo]});
+        this.setState({todos: [...this.state.todos, newTodo]});
     }
 
-    onClickTodo(todo) {
-        todo.isDone = !todo.isDone;
-        if (todo.isDone) {
-            this.setState({
-                doneTodos: [...this.state.doneTodos, todo],
-                undoneTodos: [
-                    ...this.state.undoneTodos.slice(0, this.state.undoneTodos.indexOf(todo)),
-                    ...this.state.undoneTodos.slice(this.state.undoneTodos.indexOf(todo) + 1),
-                ]
-            });
-        } else {
-            this.setState({
-                undoneTodos: [...this.state.undoneTodos, todo],
-                doneTodos: [
-                    ...this.state.doneTodos.slice(0, this.state.doneTodos.indexOf(todo)),
-                    ...this.state.doneTodos.slice(this.state.doneTodos.indexOf(todo) + 1),
-                ]
-            });
-        }
+    handleCheckTodo(todo) {
+        this.setState({
+            todos: [
+                ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
+                {
+                    ...todo,
+                    isDone: !todo.isDone
+                },
+                ...this.state.todos.slice(this.state.todos.indexOf(todo) + 1),
+            ]
+        });
     }
 
-    editTodo(todo, newValue) {
-        if (todo.isDone) {
-            this.state.doneTodos[this.state.doneTodos.indexOf(todo)].value = newValue;
-        } else {
-            this.state.undoneTodos[this.state.undoneTodos.indexOf(todo)].value = newValue;
-        }
-        this.setState({todos: this.state.todos, undoneTodos: this.state.undoneTodos, doneTodos: this.state.doneTodos});
+    handleEditTodo(todo, newValue) {
+        this.setState({
+            todos: [
+                ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
+                {
+                    ...this.state.todos[this.state.todos.indexOf(todo)],
+                    value: newValue,
+                },
+                ...this.state.todos.slice(this.state.todos.indexOf(todo) + 1),
+            ]
+        })
     }
 
-    removeTodo(todo) {
+    handleDeleteTodo(todo) {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
                 ...this.state.todos.slice(this.state.todos.indexOf(todo) + 1),
             ]
         });
-        if (todo.isDone) {
-            this.setState({
-                doneTodos: [
-                    ...this.state.doneTodos.slice(0, this.state.doneTodos.indexOf(todo)),
-                    ...this.state.doneTodos.slice(this.state.doneTodos.indexOf(todo) + 1),
-                ]
-            });
-        } else {
-            this.setState({
-                undoneTodos: [
-                    ...this.state.undoneTodos.slice(0, this.state.undoneTodos.indexOf(todo)),
-                    ...this.state.undoneTodos.slice(this.state.undoneTodos.indexOf(todo) + 1),
-                ]
-            });
-        }
     }
 
     render() {
         return (
             <div>
                 <TodoHeader/>
-                <TodoForm addTodo={this.addTodo}/>
-                <TodoListStates allTodos={this.state} deleteTodo={this.removeTodo} clickTodo={this.onClickTodo}
-                                clickEditTodo={this.editTodo}/>
+                <TodoForm onAddTodo={this.handleAddTodo}/>
+                <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
+                                onCheckTodo={this.handleCheckTodo}
+                                onEditTodo={this.handleEditTodo}/>
             </div>
         );
     }

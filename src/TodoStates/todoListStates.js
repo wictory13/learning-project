@@ -1,6 +1,12 @@
 import * as React from "react";
 import {TodoList} from "../TodoList/todoList"
 
+/**
+ * todos: []
+ * onDeleteTodo: () => void
+ * onCheckTodo: () => void
+ * onEditTodo: (nextName: string) => void
+ */
 export class TodoListStates extends React.Component {
     constructor(props) {
         super(props);
@@ -10,11 +16,21 @@ export class TodoListStates extends React.Component {
     }
 
     render() {
+        let selectedTodos;
+        if (this.state.selected === 'all') {
+            selectedTodos = this.props.todos;
+        } else if (this.state.selected === 'active') {
+            selectedTodos = this.props.todos.filter(todo => !todo.isDone);
+        } else {
+            selectedTodos = this.props.todos.filter(todo => todo.isDone);
+        }
         return (
             <div>
-                <TodoList state={this.state.selected} allTodos={this.props.allTodos} deleteTodo={this.props.deleteTodo}
-                          clickTodo={this.props.clickTodo}
-                          clickEditTodo={this.props.clickEditTodo}/>
+                <TodoList todos={selectedTodos}
+                          onDeleteTodo={this.props.onDeleteTodo}
+                          onCheckTodo={this.props.onCheckTodo}
+                          onEditTodo={this.props.onEditTodo}
+                />
                 <label>
                     <input type='radio' value='all'
                            checked={this.state.selected === 'all'}

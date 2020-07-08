@@ -3,9 +3,8 @@ const path = require('path')
 module.exports = {
     devtool: 'source-map',
     entry: './src/index.js',
-    entry: './src/index.js',
     output: {
-        filename: "main.js"
+        filename: 'main.js'
     },
     module: {
         rules: [
@@ -15,7 +14,7 @@ module.exports = {
             },
             {
                 test: /\.js/,
-                include: path.join(__dirname, "src"),
+                include: path.join(__dirname, 'src'),
                 use: {
                     loader: 'babel-loader',
                     options: {

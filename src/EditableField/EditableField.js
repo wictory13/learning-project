@@ -1,6 +1,10 @@
 import * as React from "react";
 
-
+/**
+ * value: string
+ * onChange: (e) => void
+ * onEndEdit: () => void
+ */
 class Field extends React.Component {
     constructor(props) {
         super(props);
@@ -10,13 +14,13 @@ class Field extends React.Component {
     }
 
     endContentChange(e) {
-        this.props.onBlur();
+        this.props.onEndEdit();
     };
 
     render() {
         return (
             <input
-                value={this.state.value}
+                defaultValue={this.state.value}
                 onChange={this.props.onChange}
                 onBlur={this.endContentChange.bind(this)}
                 type="text"
@@ -25,9 +29,11 @@ class Field extends React.Component {
     }
 }
 
-/*
-
-*/
+/**
+ * value: string
+ * onChange: (e) => void
+ * onEditTodo: () => void
+ */
 export default class EditableField extends React.Component {
     constructor(props) {
         super(props)
@@ -54,8 +60,7 @@ export default class EditableField extends React.Component {
             return (
                 <Field
                     onChange={this.props.onChange}
-                    autoFocus
-                    onBlur={this.handleEndEdit.bind(this)}
+                    onEndEdit={this.handleEndEdit.bind(this)}
                     value={this.props.value}
                 />
             )

@@ -1,5 +1,8 @@
 import * as React from "react";
 
+/**
+ * onAddTodo: (value: string) => void
+ */
 export class TodoForm extends React.Component {
     constructor(props) {
         super(props);
@@ -11,7 +14,7 @@ export class TodoForm extends React.Component {
         if (event.key === "Enter") {
             let newTodo = this.input.current.value;
             if (newTodo) {
-                this.props.addTodo(newTodo);
+                this.props.onAddTodo(newTodo);
             }
             this.input.current.value = "";
         }

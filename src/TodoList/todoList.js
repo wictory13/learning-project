@@ -1,20 +1,19 @@
 import * as React from "react";
 import {Todo} from "../Todo/todo";
 
+/**
+ * todos: []
+ * onDeleteTodo: () => void
+ * onCheckTodo: () => void
+ * onEditTodo: (nextName: string) => void
+ */
 export class TodoList extends React.Component {
     render() {
-        let todos;
-        if (this.props.state === 'all') {
-            todos = this.props.allTodos.todos;
-        } else if (this.props.state === 'active') {
-            todos = this.props.allTodos.undoneTodos;
-        } else {
-            todos = this.props.allTodos.doneTodos;
-        }
-
-        todos = todos.map((todo) => {
-            return (<Todo todo={todo} key={todo.id} onDeleteTodo={this.props.deleteTodo} onCheckTodo={this.props.clickTodo}
-                          onEditTodo={this.props.clickEditTodo}/>)
+        console.log(this.props.todos)
+        const todos = this.props.todos.map((todo) => {
+            return (<Todo todo={todo} key={todo.id} onDeleteTodo={() => this.props.onDeleteTodo(todo)}
+                          onCheckTodo={() => this.props.onCheckTodo(todo)}
+                          onEditTodo={(newValue) => this.props.onEditTodo(todo, newValue)}/>)
         });
         return <ul>{todos}</ul>
     }

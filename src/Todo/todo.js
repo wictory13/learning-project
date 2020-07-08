@@ -1,12 +1,9 @@
 import * as React from "react";
-import EditableField from "../EditableField";
+import EditableField from "../EditableField/EditableField";
 import "./todo.css"
 
 /**
- * Хороший контракт у всех
- * Разложить по каталожикам, стили тоже
- *
- * todo: {  }
+ * todo: {id: number, value: string, isDone: boolean}
  * onDeleteTodo: () => void
  * onCheckTodo: () => void
  * onEditTodo: (nextName: string) => void
@@ -14,23 +11,23 @@ import "./todo.css"
 export class Todo extends React.Component {
     constructor(props) {
         super(props);
-        this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
-        this.handleCheckTodo = this.handleCheckTodo.bind(this);
-        this.handleEditTodo = this.handleEditTodo.bind(this);
+        this.onDeleteTodo = this.onDeleteTodo.bind(this);
+        this.onCheckTodo = this.onCheckTodo.bind(this);
+        this.onEditTodo = this.onEditTodo.bind(this);
         this.state = {
             text: this.props.todo.value
         }
     }
 
-    handleDeleteTodo() {
-        this.props.onDeleteTodo(); // this.props.todo
+    onDeleteTodo() {
+        this.props.onDeleteTodo();
     }
 
-    handleCheckTodo() {
+    onCheckTodo() {
         this.props.onCheckTodo();
     }
 
-    handleEditTodo() {
+    onEditTodo() {
         this.props.onEditTodo(this.state.text);
     }
 
@@ -38,8 +35,8 @@ export class Todo extends React.Component {
         const className = this.props.todo.isDone ? "done" : "undone";
 
         const mark = this.props.todo.isDone ?
-            <span onClick={this.handleCheckTodo}>&#10003; </span> :
-            <span onClick={this.handleCheckTodo}>&#9711; </span>;
+            <span onClick={this.onCheckTodo}>&#10003; </span> :
+            <span onClick={this.onCheckTodo}>&#9711; </span>;
 
         return (
             <li style={{listStyleType: "none"}} className={className}>
@@ -47,9 +44,9 @@ export class Todo extends React.Component {
                 <EditableField
                     value={this.state.text}
                     onChange={(e) => this.setState({text: e.target.value})}
-                   onEditTodo={this.handleEditTodo}
+                    onEditTodo={this.onEditTodo}
                 />
-                <button onClick={this.handleDeleteTodo}>x</button>
+                <button onClick={this.onDeleteTodo}>x</button>
             </li>);
     }
 
