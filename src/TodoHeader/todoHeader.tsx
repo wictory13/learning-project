@@ -1,8 +1,8 @@
 import * as React from "react";
-import "./todoHeader.css"
+import cn from "./todoHeader.css"
 
 export class TodoHeader extends React.Component {
     render() {
-        return <h1 className={"header"}>todos</h1>;
+        return <h1 className={cn.header}>todos</h1>;
     }
 }

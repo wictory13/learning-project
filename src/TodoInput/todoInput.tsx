@@ -1,10 +1,11 @@
 import * as React from "react";
+import cn from './todoInput.css'
 
 interface TodoFormPropType {
     onAddTodo: (value: string) => void
 }
 
-export class TodoForm extends React.Component<TodoFormPropType, {}> {
+export class TodoInput extends React.Component<TodoFormPropType, {}> {
     private readonly input: React.RefObject<HTMLInputElement> = React.createRef();
 
     constructor(props: TodoFormPropType) {
@@ -27,7 +28,7 @@ export class TodoForm extends React.Component<TodoFormPropType, {}> {
 
     render() {
         return (
-            <input onKeyPress={this.keyPressed} ref={this.input} placeholder="What needs to be done?"/>
+            <input className={cn.todoInput} onKeyPress={this.keyPressed} ref={this.input} placeholder="What needs to be done?"/>
         );
     }
 }

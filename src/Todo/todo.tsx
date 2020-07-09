@@ -1,6 +1,6 @@
 import * as React from "react";
 import EditableField from "../EditableField/EditableField";
-import "./todo.css"
+import cn from "./todo.css";
 
 interface TodoPropsType {
     todo: { id: number, value: string, isDone: boolean },
@@ -26,6 +26,7 @@ export class Todo extends React.Component<TodoPropsType, TodoStateType> {
 
     onDeleteTodo() {
         this.props.onDeleteTodo();
+
     }
 
     onCheckTodo() {
@@ -37,22 +38,25 @@ export class Todo extends React.Component<TodoPropsType, TodoStateType> {
     }
 
     render() {
-        const className = this.props.todo.isDone ? "done" : "undone";
+        const isDone = this.props.todo.isDone ? cn.doneTodo : "undone";
 
         const mark = this.props.todo.isDone ?
             <span onClick={this.onCheckTodo}>&#10003; </span> :
             <span onClick={this.onCheckTodo}>&#9711; </span>;
 
         return (
-            <li style={{listStyleType: "none"}} className={className}>
-                {mark}
-                <EditableField
-                    value={this.state.text}
-                    onChange={(value) => this.setState({text: value})}
-                    onEditTodo={this.onEditTodo}
-                />
-                <button onClick={this.onDeleteTodo}>x</button>
-            </li>);
+            <li className={isDone}>
+                <div className={cn.todo}>
+                    {mark}
+                    <EditableField
+                        value={this.state.text}
+                        onChange={(value) => this.setState({text: value})}
+                        onEditTodo={this.onEditTodo}
+                    />
+                    <button className={cn.deleteTodo} onClick={this.onDeleteTodo}>x</button>
+                </div>
+            </li>
+        );
     }
 
 }

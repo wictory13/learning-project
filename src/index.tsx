@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import {TodoHeader} from "./TodoHeader/todoHeader";
-import {TodoForm} from "./TodoForm/TodoForm";
-import {TodoListStates} from "./TodoStates/todoListStates";
+import {TodoInput} from "./TodoInput/todoInput";
+import {TodoListStates} from "./TodoListStates/todoListStates";
+import cn from "./index.css"
 
 let id = 1;
 
@@ -67,12 +68,14 @@ class TodoApp extends React.Component<{}, TodoAppStateType> {
 
     render() {
         return (
-            <div>
+            <div className={cn.todoapp}>
                 <TodoHeader/>
-                <TodoForm onAddTodo={this.handleAddTodo}/>
+                <div className={cn.todoform}>
+                <TodoInput onAddTodo={this.handleAddTodo}/>
                 <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
                                 onCheckTodo={this.handleCheckTodo}
                                 onEditTodo={this.handleEditTodo}/>
+                </div>
             </div>
         );
     }

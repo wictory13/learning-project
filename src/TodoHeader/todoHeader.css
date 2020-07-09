@@ -1,3 +1,7 @@
 .header {
-    color: red;
+    margin: 0;
+    color: #ead7d7;
+    font-size: 100px;
+    font-weight: 100;
+    text-align: center;
 }
