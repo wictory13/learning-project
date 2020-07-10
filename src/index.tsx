@@ -3,7 +3,7 @@ import * as ReactDom from "react-dom";
 import {TodoHeader} from "./TodoHeader/todoHeader";
 import {TodoInput} from "./TodoInput/todoInput";
 import {TodoListStates} from "./TodoListStates/todoListStates";
-import cn from "./index.css"
+import cn from "./index.less"
 
 let id = 1;
 
@@ -11,13 +11,14 @@ interface TodoAppStateType {
     todos: { id: number, value: string, isDone: boolean }[]
 }
 
-class TodoApp extends React.Component<{}, TodoAppStateType> {
+export class TodoApp extends React.Component<{}, TodoAppStateType> {
     constructor(props: {}) {
         super(props);
         this.handleAddTodo = this.handleAddTodo.bind(this);
         this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
         this.handleCheckTodo = this.handleCheckTodo.bind(this);
         this.handleEditTodo = this.handleEditTodo.bind(this);
+        this.handleDeleteDoneTodos = this.handleDeleteDoneTodos.bind(this);
         this.state = {todos: []};
     }
 
@@ -66,6 +67,11 @@ class TodoApp extends React.Component<{}, TodoAppStateType> {
         });
     }
 
+    handleDeleteDoneTodos() {
+        let undoneTodos = this.state.todos.filter(todo => !todo.isDone);
+        this.setState({todos: undoneTodos})
+    }
+
     render() {
         return (
             <div className={cn.todoapp}>
@@ -74,7 +80,8 @@ class TodoApp extends React.Component<{}, TodoAppStateType> {
                 <TodoInput onAddTodo={this.handleAddTodo}/>
                 <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
                                 onCheckTodo={this.handleCheckTodo}
-                                onEditTodo={this.handleEditTodo}/>
+                                onEditTodo={this.handleEditTodo}
+                onDeleteDoneTodos={this.handleDeleteDoneTodos}/>
                 </div>
             </div>
         );

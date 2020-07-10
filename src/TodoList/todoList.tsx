@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Todo} from "../Todo/todo";
-import cn from './todoList.css'
+import cn from './todoList.less'
 
 interface TodoListPropsType {
     todos: {id: number, value: string, isDone: boolean}[],
@@ -16,6 +16,6 @@ export class TodoList extends React.Component<TodoListPropsType> {
                           onCheckTodo={() => this.props.onCheckTodo(todo)}
                           onEditTodo={(newValue) => this.props.onEditTodo(todo, newValue)}/>)
         });
-        return <ul className={cn.todoList}>{todos}</ul>
+        return <div className={cn.todoList}>{todos}</div>
     }
 }

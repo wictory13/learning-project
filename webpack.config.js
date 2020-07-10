@@ -12,7 +12,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.(c|le)ss$/,
                 use: [
                     'classnames-loader',
                     'style-loader',
@@ -21,7 +21,7 @@ module.exports = {
                         options: {
                             modules: true
                         }
-                    }]
+                    }, 'less-loader',]
             },
             {
                 test: /\.(ts|js)x?$/,

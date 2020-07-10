@@ -1,12 +1,13 @@
 import * as React from "react";
 import {TodoList} from "../TodoList/todoList"
-import cn from './todoListStates.css'
+import cn from './todoListStates.less'
 
 interface TodoListStatesPropsType {
     todos: { id: number, value: string, isDone: boolean }[],
     onDeleteTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
     onCheckTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
     onEditTodo: (todo: { id: number; value: string; isDone: boolean }, nextName: string) => void
+    onDeleteDoneTodos: () => void
 }
 
 interface TodoListStatesStateType {
@@ -19,16 +20,6 @@ export class TodoListStates extends React.Component<TodoListStatesPropsType, Tod
         this.state = {
             selected: 'all'
         };
-        this.onDeleteCompletedTodo = this.onDeleteCompletedTodo.bind(this);
-    }
-
-    onDeleteCompletedTodo(){
-        // this.props.todos.map(todo => {
-        //     if (todo.isDone) {
-        //         console.log(todo)
-        //         this.props.onDeleteTodo(todo);
-        //     }
-        // });
     }
 
     render() {
@@ -40,7 +31,6 @@ export class TodoListStates extends React.Component<TodoListStatesPropsType, Tod
         } else {
             selectedTodos = this.props.todos.filter(todo => todo.isDone);
         }
-        const noTodos = this.props.todos.length === 0 ? cn.noTodos : "todos";
         const todosNumber = this.props.todos.filter(todo => !todo.isDone).length;
         return (
             <div className={cn.todoListState}>
@@ -49,25 +39,27 @@ export class TodoListStates extends React.Component<TodoListStatesPropsType, Tod
                           onCheckTodo={this.props.onCheckTodo}
                           onEditTodo={this.props.onEditTodo}
                 />
-                <span className={noTodos}>
+                <div className={cn.states}>
                     <span>{todosNumber} items left</span>
+                    <span className={cn.statesRemote}>
                     <label>
-                        <input type='radio' value='all'
+                        <input type='radio' value='all' className={cn.stateButton}
                                checked={this.state.selected === 'all'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        All</label>
+                        <span>All</span></label>
                     <label>
-                        <input type='radio' value='active'
+                        <input type='radio' value='active' className={cn.stateButton}
                                checked={this.state.selected === 'active'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        Active</label>
+                        <span>Active</span></label>
                     <label>
-                        <input type='radio' value='completed'
+                        <input type='radio' value='completed' className={cn.stateButton}
                                checked={this.state.selected === 'completed'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        Completed</label>
-                    <button onClick={this.onDeleteCompletedTodo}>Clear completed</button>
-                </span>
+                        <span>Completed</span></label>
+                        </span>
+                    <button className={cn.clearButton} onClick={this.props.onDeleteDoneTodos}>Clear completed</button>
+                </div>
             </div>
         );
     }

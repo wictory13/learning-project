@@ -1,6 +1,6 @@
 import * as React from "react";
-import EditableField from "../EditableField/EditableField";
-import cn from "./todo.css";
+import EditableField from "../EditableField/editableField";
+import cn from "./todo.less";
 
 interface TodoPropsType {
     todo: { id: number, value: string, isDone: boolean },
@@ -38,24 +38,21 @@ export class Todo extends React.Component<TodoPropsType, TodoStateType> {
     }
 
     render() {
-        const isDone = this.props.todo.isDone ? cn.doneTodo : "undone";
-
-        const mark = this.props.todo.isDone ?
-            <span onClick={this.onCheckTodo}>&#10003; </span> :
-            <span onClick={this.onCheckTodo}>&#9711; </span>;
 
         return (
-            <li className={isDone}>
-                <div className={cn.todo}>
-                    {mark}
+            <div className={cn.todo}>
+                <span className={cn.todoField}>
+                    <input type="checkbox" onChange={this.onCheckTodo} className={cn.checkBox}/>
+                <span className={cn.todoContent}>
                     <EditableField
                         value={this.state.text}
                         onChange={(value) => this.setState({text: value})}
                         onEditTodo={this.onEditTodo}
                     />
-                    <button className={cn.deleteTodo} onClick={this.onDeleteTodo}>x</button>
-                </div>
-            </li>
+                </span>
+                    <button className={cn.deleteTodo} onClick={this.onDeleteTodo}>×</button>
+                </span>
+            </div>
         );
     }
 

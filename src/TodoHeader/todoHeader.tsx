@@ -1,5 +1,5 @@
 import * as React from "react";
-import cn from "./todoHeader.css"
+import cn from "./todoHeader.less"
 
 export class TodoHeader extends React.Component {
     render() {

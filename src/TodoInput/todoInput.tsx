@@ -1,5 +1,5 @@
 import * as React from "react";
-import cn from './todoInput.css'
+import cn from './todoInput.less'
 
 interface TodoFormPropType {
     onAddTodo: (value: string) => void
