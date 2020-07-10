@@ -32,8 +32,13 @@ export class TodoListStates extends React.Component<TodoListStatesPropsType, Tod
             selectedTodos = this.props.todos.filter(todo => todo.isDone);
         }
         const todosNumber = this.props.todos.filter(todo => !todo.isDone).length;
+        const mainDivStyle = cn({
+            todoListState: true,
+            noTodos: this.props.todos.length === 0
+        });
+
         return (
-            <div className={cn.todoListState}>
+            <div className={mainDivStyle}>
                 <TodoList todos={selectedTodos}
                           onDeleteTodo={this.props.onDeleteTodo}
                           onCheckTodo={this.props.onCheckTodo}

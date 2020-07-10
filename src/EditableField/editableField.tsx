@@ -25,7 +25,7 @@ class Field extends React.Component<FieldPropsType, FieldStateType> {
 
     render() {
         return (
-            <input
+            <input className={cn.edit}
                 defaultValue={this.state.value}
                 onChange={event => this.props.onChange(event.target.value)}
                 onBlur={this.endContentChange.bind(this)}
@@ -47,7 +47,7 @@ interface EditableFieldStateType {
 
 export default class EditableField extends React.Component<EditableFieldPropsType, EditableFieldStateType> {
     constructor(props: EditableFieldPropsType) {
-        super(props)
+        super(props);
         this.state = {
             edit: false,
         }
@@ -77,7 +77,7 @@ export default class EditableField extends React.Component<EditableFieldPropsTyp
             );
         } else {
             return (
-                <span
+                <span className={cn.normal}
                     onDoubleClick={this.handleDoubleClick.bind(this)}
                 >
           {this.props.value}
