@@ -42,7 +42,7 @@ export class Todo extends React.Component<TodoPropsType, TodoStateType> {
         return (
             <div className={cn.todo}>
                 <span className={cn.todoField}>
-                    <input type="checkbox" onChange={this.onCheckTodo} className={cn.checkBox}/>
+                    <input type="checkbox" onChange={this.onCheckTodo} checked={this.props.todo.isDone} className={cn.checkBox}/>
                 <span className={cn.todoContent}>
                     <EditableField
                         value={this.state.text}
@@ -55,5 +55,4 @@ export class Todo extends React.Component<TodoPropsType, TodoStateType> {
             </div>
         );
     }
-
 }
