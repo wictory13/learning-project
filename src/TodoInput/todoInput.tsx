@@ -1,34 +1,39 @@
 import * as React from "react";
 import cn from './todoInput.less'
 
-interface TodoFormPropType {
+interface TodoInputProps {
     onAddTodo: (value: string) => void
 }
 
-export class TodoInput extends React.Component<TodoFormPropType, {}> {
-    private readonly input: React.RefObject<HTMLInputElement> = React.createRef();
+interface TodoInputState {
+    value: string
+}
 
-    constructor(props: TodoFormPropType) {
+export class TodoInput extends React.Component<TodoInputProps, TodoInputState> {
+    constructor(props: TodoInputProps) {
         super(props);
-        this.keyPressed = this.keyPressed.bind(this);
-    }
-
-    keyPressed(event: React.KeyboardEvent<HTMLInputElement>) {
-        if (this.input.current == undefined) {
-            return;
-        }
-        if (event.key === "Enter") {
-            let newTodo = this.input.current.value;
-            if (newTodo) {
-                this.props.onAddTodo(newTodo);
-            }
-            this.input.current.value = "";
+        this.state = {
+            value: ""
         }
     }
 
     render() {
         return (
-            <input className={cn.todoInput} onKeyPress={this.keyPressed} ref={this.input} placeholder="What needs to be done?"/>
+            <input className={cn.todoInput}
+                   value={this.state.value}
+                   onChange={event => this.setState({value: event.target.value})} onKeyPress={this.handleKeyPressed}
+                   placeholder="What needs to be done?"/>
         );
+    }
+
+    handleKeyPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            let newTodo = this.state.value;
+            if (newTodo) {
+                this.props.onAddTodo(newTodo);
+            }
+            this.setState({value: ""});
+        }
+
     }
 }

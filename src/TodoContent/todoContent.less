@@ -1,0 +1,29 @@
+.notEdit {
+  position: absolute;
+  width: 475px;
+
+  &:not(:hover) .deleteTodo {
+    visibility: hidden;
+  }
+}
+
+.isChecked {
+  text-decoration-line: line-through;
+  color: #e6e8e9;
+}
+
+.deleteTodo {
+  z-index: 0;
+  position: absolute;
+  right: 15px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #965454;
+  opacity: .5;
+  font-size: 30px;
+
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -1,4 +1,23 @@
 .todoList {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.commonCheckbox {
+  position: absolute;
+  top: -45px;
+  left: 20px;
+  -webkit-appearance: none;
+  -webkit-transform: rotate(45deg);
+  border: solid #737373;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(45deg);
+  opacity: .5;
+  outline: none;
+
+  &:checked {
+    opacity: 1;
+  }
 }

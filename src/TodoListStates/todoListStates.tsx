@@ -1,40 +1,49 @@
 import * as React from "react";
 import {TodoList} from "../TodoList/todoList"
 import cn from './todoListStates.less'
+import {TodoItem} from "../Domain/todoItem";
 
-interface TodoListStatesPropsType {
-    todos: { id: number, value: string, isDone: boolean }[],
-    onDeleteTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
-    onCheckTodo: (todo: { id: number; value: string; isDone: boolean }) => void,
-    onEditTodo: (todo: { id: number; value: string; isDone: boolean }, nextName: string) => void
-    onDeleteDoneTodos: () => void
+interface TodoListStatesProps {
+    todos: TodoItem[],
+    onDeleteTodo: (todo: TodoItem) => void,
+    onCheckTodo: (todo: TodoItem) => void,
+    onEditTodo: (todo: TodoItem, nextName: string) => void,
+    onDeleteDoneTodos: () => void,
+    onCheckAllTodos: () => void
 }
 
-interface TodoListStatesStateType {
+interface TodoListStatesState {
     selected: string
 }
 
-export class TodoListStates extends React.Component<TodoListStatesPropsType, TodoListStatesStateType> {
-    constructor(props: TodoListStatesPropsType) {
+export class TodoListStates extends React.Component<TodoListStatesProps, TodoListStatesState> {
+    constructor(props: TodoListStatesProps) {
         super(props);
         this.state = {
             selected: 'all'
         };
     }
 
-    render() {
-        let selectedTodos;
+    chooseState = () => {
         if (this.state.selected === 'all') {
-            selectedTodos = this.props.todos;
+            return this.props.todos;
         } else if (this.state.selected === 'active') {
-            selectedTodos = this.props.todos.filter(todo => !todo.isDone);
+            return this.props.todos.filter(todo => !todo.isDone);
         } else {
-            selectedTodos = this.props.todos.filter(todo => todo.isDone);
+            return this.props.todos.filter(todo => todo.isDone);
         }
+    }
+
+    render() {
+        let selectedTodos = this.chooseState();
         const todosNumber = this.props.todos.filter(todo => !todo.isDone).length;
         const mainDivStyle = cn({
             todoListState: true,
             noTodos: this.props.todos.length === 0
+        });
+        const clearButtonStyle = cn({
+            clearButton: true,
+            noClearButton: this.props.todos.filter(todo => todo.isDone).length === 0
         });
 
         return (
@@ -43,27 +52,31 @@ export class TodoListStates extends React.Component<TodoListStatesPropsType, Tod
                           onDeleteTodo={this.props.onDeleteTodo}
                           onCheckTodo={this.props.onCheckTodo}
                           onEditTodo={this.props.onEditTodo}
+                          onCheckAllTodos={this.props.onCheckAllTodos}
                 />
                 <div className={cn.states}>
-                    <span>{todosNumber} items left</span>
+                    <span>{todosNumber} {todosNumber === 1 ? "item" : "items"} left</span>
                     <span className={cn.statesRemote}>
                     <label>
                         <input type='radio' value='all' className={cn.stateButton}
                                checked={this.state.selected === 'all'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        <span>All</span></label>
+                        <span>All</span>
+                    </label>
                     <label>
                         <input type='radio' value='active' className={cn.stateButton}
                                checked={this.state.selected === 'active'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        <span>Active</span></label>
+                        <span>Active</span>
+                    </label>
                     <label>
                         <input type='radio' value='completed' className={cn.stateButton}
                                checked={this.state.selected === 'completed'}
                                onChange={(e) => this.setState({selected: e.target.value})}/>
-                        <span>Completed</span></label>
+                        <span>Completed</span>
+                    </label>
                         </span>
-                    <button className={cn.clearButton} onClick={this.props.onDeleteDoneTodos}>Clear completed</button>
+                    <button className={clearButtonStyle} onClick={this.props.onDeleteDoneTodos}>Clear completed</button>
                 </div>
             </div>
         );

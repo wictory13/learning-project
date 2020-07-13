@@ -3,26 +3,22 @@ import * as ReactDom from "react-dom";
 import {TodoHeader} from "./TodoHeader/todoHeader";
 import {TodoInput} from "./TodoInput/todoInput";
 import {TodoListStates} from "./TodoListStates/todoListStates";
+import {TodoItem} from "./Domain/todoItem";
 import cn from "./index.less"
 
 let id = 1;
 
 interface TodoAppStateType {
-    todos: { id: number, value: string, isDone: boolean }[]
+    todos: TodoItem[]
 }
 
 export class TodoApp extends React.Component<{}, TodoAppStateType> {
     constructor(props: {}) {
         super(props);
-        this.handleAddTodo = this.handleAddTodo.bind(this);
-        this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
-        this.handleCheckTodo = this.handleCheckTodo.bind(this);
-        this.handleEditTodo = this.handleEditTodo.bind(this);
-        this.handleDeleteDoneTodos = this.handleDeleteDoneTodos.bind(this);
         this.state = {todos: []};
     }
 
-    handleAddTodo(todo: string) {
+    handleAddTodo = (todo: string) => {
         const newTodo = {
             id: id,
             value: todo,
@@ -32,7 +28,7 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         this.setState({todos: [...this.state.todos, newTodo]});
     }
 
-    handleCheckTodo(todo: { id: number, value: string, isDone: boolean }) {
+    handleCheckTodo = (todo: TodoItem) => {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -45,7 +41,7 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         });
     }
 
-    handleEditTodo(todo: { id: number, value: string, isDone: boolean }, newValue: string) {
+    handleEditTodo = (todo: { id: number, value: string, isDone: boolean }, newValue: string) => {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -58,7 +54,7 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         })
     }
 
-    handleDeleteTodo(todo: { id: number, value: string, isDone: boolean }) {
+    handleDeleteTodo = (todo: { id: number, value: string, isDone: boolean }) => {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -67,21 +63,49 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         });
     }
 
-    handleDeleteDoneTodos() {
+    handleDeleteDoneTodos = () => {
         let undoneTodos = this.state.todos.filter(todo => !todo.isDone);
         this.setState({todos: undoneTodos})
     }
 
+    handleCheckAllTodos = () => {
+        const doneTodos = this.state.todos.filter(todo => todo.isDone);
+        let newTodos = [];
+        if (doneTodos.length === this.state.todos.length) {
+            for (const todo of this.state.todos) {
+                newTodos.push({
+                    ...todo, isDone: false
+                });
+            }
+        } else {
+            for (const todo of this.state.todos) {
+                if (!todo.isDone) {
+                    newTodos.push({
+                        ...todo, isDone: true
+                    });
+                } else {
+                    newTodos.push(todo);
+                }
+            }
+        }
+
+        this.setState({
+            todos: newTodos
+        });
+    }
+
     render() {
         return (
-            <div className={cn.todoapp}>
+            <div className={cn.app}>
                 <TodoHeader/>
-                <div className={cn.todoform}>
-                <TodoInput onAddTodo={this.handleAddTodo}/>
-                <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
-                                onCheckTodo={this.handleCheckTodo}
-                                onEditTodo={this.handleEditTodo}
-                onDeleteDoneTodos={this.handleDeleteDoneTodos}/>
+                <div className={cn.input}>
+                    <TodoInput onAddTodo={this.handleAddTodo}/>
+                    <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
+                                    onCheckTodo={this.handleCheckTodo}
+                                    onEditTodo={this.handleEditTodo}
+                                    onDeleteDoneTodos={this.handleDeleteDoneTodos}
+                                    onCheckAllTodos={this.handleCheckAllTodos}
+                    />
                 </div>
             </div>
         );

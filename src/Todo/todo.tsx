@@ -1,56 +1,44 @@
 import * as React from "react";
-import EditableField from "../EditableField/editableField";
+import TodoContent from "../TodoContent/todoContent";
 import cn from "./todo.less";
+import {TodoItem} from "../Domain/todoItem";
 
-interface TodoPropsType {
-    todo: { id: number, value: string, isDone: boolean },
+interface TodoProps {
+    todo: TodoItem,
     onDeleteTodo: () => void,
     onCheckTodo: () => void,
     onEditTodo: (nextName: string) => void
 }
 
-interface TodoStateType {
-    text: string
+interface TodoState {
+    value: string
 }
 
-export class Todo extends React.Component<TodoPropsType, TodoStateType> {
-    constructor(props: TodoPropsType) {
+export class Todo extends React.Component<TodoProps, TodoState> {
+    constructor(props: TodoProps) {
         super(props);
-        this.onDeleteTodo = this.onDeleteTodo.bind(this);
-        this.onCheckTodo = this.onCheckTodo.bind(this);
-        this.onEditTodo = this.onEditTodo.bind(this);
         this.state = {
-            text: this.props.todo.value
+            value: this.props.todo.value
         }
     }
 
-    onDeleteTodo() {
-        this.props.onDeleteTodo();
-
-    }
-
-    onCheckTodo() {
-        this.props.onCheckTodo();
-    }
-
-    onEditTodo() {
-        this.props.onEditTodo(this.state.text);
+    onEditTodo = () => {
+        this.props.onEditTodo(this.state.value);
     }
 
     render() {
-
         return (
             <div className={cn.todo}>
                 <span className={cn.todoField}>
-                    <input type="checkbox" onChange={this.onCheckTodo} checked={this.props.todo.isDone} className={cn.checkBox}/>
-                <span className={cn.todoContent}>
-                    <EditableField
-                        value={this.state.text}
-                        onChange={(value) => this.setState({text: value})}
+                    <input type="checkbox" onChange={this.props.onCheckTodo} checked={this.props.todo.isDone}
+                           className={cn.checkBox}/>
+                    <TodoContent
+                        isChecked={this.props.todo.isDone}
+                        onDeleteTodo={this.props.onDeleteTodo}
+                        value={this.state.value}
+                        onChange={(value) => this.setState({value: value})}
                         onEditTodo={this.onEditTodo}
                     />
-                </span>
-                    <button className={cn.deleteTodo} onClick={this.onDeleteTodo}>×</button>
                 </span>
             </div>
         );
