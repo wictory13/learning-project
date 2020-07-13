@@ -14,11 +14,10 @@ interface TodoListProps {
 
 export class TodoList extends React.Component<TodoListProps> {
     render() {
-        const todos = this.props.todos.map((todo) => {
-            return (<Todo todo={todo} key={todo.id} onDeleteTodo={() => this.props.onDeleteTodo(todo)}
-                          onCheckTodo={() => this.props.onCheckTodo(todo)}
-                          onEditTodo={(newValue) => this.props.onEditTodo(todo, newValue)}/>)
-        });
+        const todos = this.props.todos.map((todo) =>
+            (<Todo todo={todo} key={todo.id} onDeleteTodo={() => this.props.onDeleteTodo(todo)}
+                   onCheckTodo={() => this.props.onCheckTodo(todo)}
+                   onEditTodo={(newValue) => this.props.onEditTodo(todo, newValue)}/>));
         return <div className={cn.todoList}>
             <input type="checkbox"
                    onChange={this.props.onCheckAllTodos}

@@ -34,6 +34,5 @@ export class TodoInput extends React.Component<TodoInputProps, TodoInputState> {
             }
             this.setState({value: ""});
         }
-
     }
 }

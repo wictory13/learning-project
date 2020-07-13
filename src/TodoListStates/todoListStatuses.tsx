@@ -16,7 +16,7 @@ interface TodoListStatesState {
     selected: string
 }
 
-export class TodoListStates extends React.Component<TodoListStatesProps, TodoListStatesState> {
+export class TodoListStatuses extends React.Component<TodoListStatesProps, TodoListStatesState> {
     constructor(props: TodoListStatesProps) {
         super(props);
         this.state = {

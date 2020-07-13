@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {TodoHeader} from "./TodoHeader/todoHeader";
 import {TodoInput} from "./TodoInput/todoInput";
-import {TodoListStates} from "./TodoListStates/todoListStates";
+import {TodoListStatuses} from "./TodoListStates/todoListStatuses";
 import {TodoItem} from "./Domain/todoItem";
 import cn from "./index.less"
 
@@ -41,7 +41,7 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         });
     }
 
-    handleEditTodo = (todo: { id: number, value: string, isDone: boolean }, newValue: string) => {
+    handleEditTodo = (todo: TodoItem, newValue: string) => {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -54,7 +54,7 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         })
     }
 
-    handleDeleteTodo = (todo: { id: number, value: string, isDone: boolean }) => {
+    handleDeleteTodo = (todo: TodoItem) => {
         this.setState({
             todos: [
                 ...this.state.todos.slice(0, this.state.todos.indexOf(todo)),
@@ -98,13 +98,13 @@ export class TodoApp extends React.Component<{}, TodoAppStateType> {
         return (
             <div className={cn.app}>
                 <TodoHeader/>
-                <div className={cn.input}>
+                <div className={cn.form}>
                     <TodoInput onAddTodo={this.handleAddTodo}/>
-                    <TodoListStates todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
-                                    onCheckTodo={this.handleCheckTodo}
-                                    onEditTodo={this.handleEditTodo}
-                                    onDeleteDoneTodos={this.handleDeleteDoneTodos}
-                                    onCheckAllTodos={this.handleCheckAllTodos}
+                    <TodoListStatuses todos={this.state.todos} onDeleteTodo={this.handleDeleteTodo}
+                                      onCheckTodo={this.handleCheckTodo}
+                                      onEditTodo={this.handleEditTodo}
+                                      onDeleteDoneTodos={this.handleDeleteDoneTodos}
+                                      onCheckAllTodos={this.handleCheckAllTodos}
                     />
                 </div>
             </div>
