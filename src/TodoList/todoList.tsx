@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Todo} from "../Todo/todo";
 import cn from './todoList.less'
-import {TodoItem} from "../Domain/todoItem";
+import {TodoItem} from "../Domain/types";
 
 interface TodoListProps {
     todos: TodoItem[],

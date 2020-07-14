@@ -1,8 +1,8 @@
 import React from 'react';
-import cn from "../../index.less";
+import cn from "../../TodoApp/todoApp.less";
 import {TodoHeader} from "../../TodoHeader/todoHeader";
 import {TodoInput} from "../../TodoInput/todoInput";
-import {TodoListStatuses} from "../../TodoListStates/todoListStatuses";
+import {TodoListStatuses} from "../../TodoListStatuses/todoListStatuses";
 import {action} from "@storybook/addon-actions";
 
 export default {title: 'TodoApp'};
