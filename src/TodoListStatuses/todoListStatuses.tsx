@@ -1,22 +1,20 @@
 import * as React from "react";
-import {TodoList} from "../TodoList/todoList"
+import {TodoListContainer} from "../TodoList/todoList"
 import cn from './todoListStatuses.less'
-import {TodoItem} from "../Domain/types";
+import {TodoAppState, TodoItem} from "../Domain/types";
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
 
 interface TodoListStatesProps {
     todos: TodoItem[],
-    onDeleteTodo: (todo: TodoItem) => void,
-    onCheckTodo: (todo: TodoItem) => void,
-    onEditTodo: (todo: TodoItem, nextName: string) => void,
-    onDeleteDoneTodos: () => void,
-    onCheckAllTodos: () => void
+    onDeleteDoneTodos: () => void
 }
 
 interface TodoListStatesState {
     selected: string
 }
 
-export class TodoListStatuses extends React.Component<TodoListStatesProps, TodoListStatesState> {
+class TodoListStatuses extends React.Component<TodoListStatesProps, TodoListStatesState> {
     constructor(props: TodoListStatesProps) {
         super(props);
         this.state = {
@@ -48,11 +46,7 @@ export class TodoListStatuses extends React.Component<TodoListStatesProps, TodoL
 
         return (
             <div className={mainDivStyle}>
-                <TodoList todos={selectedTodos}
-                          onDeleteTodo={this.props.onDeleteTodo}
-                          onCheckTodo={this.props.onCheckTodo}
-                          onEditTodo={this.props.onEditTodo}
-                          onCheckAllTodos={this.props.onCheckAllTodos}
+                <TodoListContainer todos={selectedTodos}
                 />
                 <div className={cn.states}>
                     <span>{todosNumber} {todosNumber === 1 ? "item" : "items"} left</span>
@@ -82,3 +76,17 @@ export class TodoListStatuses extends React.Component<TodoListStatesProps, TodoL
         );
     }
 }
+
+const mapStateToProps = (state: TodoAppState) => ({
+    todos: state.todos
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        onDeleteDoneTodos: () => dispatch({
+            type: 'DELETE_DONE_TODOS'
+        })
+    };
+}
+
+export const TodoListStatusesContainer = connect(mapStateToProps, mapDispatchToProps)(TodoListStatuses);

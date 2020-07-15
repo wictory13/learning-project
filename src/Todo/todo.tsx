@@ -1,46 +1,43 @@
 import * as React from "react";
-import TodoContent from "../TodoContent/todoContent";
+import {TodoContentContainer} from "../TodoContent/todoContent";
 import cn from "./todo.less";
 import {TodoItem} from "../Domain/types";
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
 
 interface TodoProps {
     todo: TodoItem,
-    onDeleteTodo: () => void,
-    onCheckTodo: () => void,
-    onEditTodo: (nextName: string) => void
+    onCheckTodo: (id: number) => void,
 }
 
-interface TodoState {
-    value: string
-}
-
-export class Todo extends React.Component<TodoProps, TodoState> {
-    constructor(props: TodoProps) {
-        super(props);
-        this.state = {
-            value: this.props.todo.value
-        }
-    }
-
-    onEditTodo = () => {
-        this.props.onEditTodo(this.state.value);
-    }
-
+class Todo extends React.Component<TodoProps, {}> {
     render() {
         return (
             <div className={cn.todo}>
                 <span className={cn.todoField}>
-                    <input type="checkbox" onChange={this.props.onCheckTodo} checked={this.props.todo.isDone}
+                    <input type="checkbox" onChange={() => this.props.onCheckTodo(this.props.todo.id)} checked={this.props.todo.isDone}
                            className={cn.checkBox}/>
-                    <TodoContent
+                    <TodoContentContainer
                         isChecked={this.props.todo.isDone}
-                        onDeleteTodo={this.props.onDeleteTodo}
-                        value={this.state.value}
-                        onChange={(value) => this.setState({value: value})}
-                        onEditTodo={this.onEditTodo}
+                        id={this.props.todo.id}
+                        value={this.props.todo.value}
                     />
                 </span>
             </div>
         );
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        onCheckTodo: (id: number) => dispatch({
+            type: 'CHECK_TODO',
+            payload: {
+                id: id
+            }
+        }),
+
+    };
+}
+
+export const TodoContainer = connect(undefined, mapDispatchToProps)(Todo);

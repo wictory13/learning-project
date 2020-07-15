@@ -1,13 +1,14 @@
 import * as React from "react";
 import cn from "./todoContent.less";
-import {EditableField} from "./editableField";
+import {EditableFieldContainer} from "./editableField";
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
 
 
 interface TodoContentProps {
+    id: number,
     value: string,
-    onChange: (e: string) => void,
-    onEditTodo: () => void,
-    onDeleteTodo: () => void,
+    onDeleteTodo: (id: number) => void,
     isChecked: boolean
 }
 
@@ -15,11 +16,11 @@ interface TodoContentState {
     edit: boolean
 }
 
-export default class TodoContent extends React.Component<TodoContentProps, TodoContentState> {
+class TodoContent extends React.Component<TodoContentProps, TodoContentState> {
     constructor(props: TodoContentProps) {
         super(props);
         this.state = {
-            edit: false,
+            edit: false
         }
     }
 
@@ -33,18 +34,16 @@ export default class TodoContent extends React.Component<TodoContentProps, TodoC
         this.setState({
             edit: false,
         });
-        this.props.onEditTodo();
     }
 
     render() {
         const contentStyle = cn("notEdit", {isChecked: this.props.isChecked})
-
         if (this.state.edit) {
             return (
-                <EditableField
-                    onChange={(nextValue) => this.props.onChange(nextValue)}
+                <EditableFieldContainer
                     onEndEdit={this.handleEndEdit}
                     value={this.props.value}
+                    id={this.props.id}
                 />
             );
         } else {
@@ -53,9 +52,22 @@ export default class TodoContent extends React.Component<TodoContentProps, TodoC
                       onDoubleClick={this.handleDoubleClick}
                 >
         {this.props.value}
-                    <button className={cn.deleteTodo} onClick={this.props.onDeleteTodo}>×</button>
+                    <button className={cn.deleteTodo} onClick={() => this.props.onDeleteTodo(this.props.id)}>×</button>
         </span>
             );
         }
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        onDeleteTodo: (id: number) => dispatch({
+            type: 'DELETE_TODO',
+            payload: {
+                id: id
+            }
+        })
+    };
+}
+
+export const TodoContentContainer = connect(undefined, mapDispatchToProps)(TodoContent);

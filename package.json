@@ -33,6 +33,7 @@
     "@storybook/addon-actions": "^5.3.19",
     "@storybook/react": "^5.3.19",
     "@types/classnames": "^2.2.10",
+    "@types/react-redux": "^7.1.9",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
     "less": "^3.11.3",

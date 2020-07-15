@@ -1,10 +1,13 @@
 import * as React from "react";
 import cn from "./editableField.less";
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
 
 interface EditableFieldProps {
     value: string,
-    onChange: (e: string) => void,
+    id: number,
     onEndEdit: () => void,
+    onEditTodo: (id: number, newValue: string) => void
 }
 
 interface EditableFieldState {
@@ -20,7 +23,7 @@ export class EditableField extends React.Component<EditableFieldProps, EditableF
     }
 
     endContentChange = () => {
-        this.props.onChange(this.state.value);
+        this.props.onEditTodo(this.props.id, this.state.value);
         this.props.onEndEdit();
     };
 
@@ -43,3 +46,17 @@ export class EditableField extends React.Component<EditableFieldProps, EditableF
         )
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        onEditTodo: (id: number, newValue: string) => dispatch({
+            type: 'EDIT_TODO',
+            payload: {
+                id: id,
+                newValue: newValue
+            }
+        }),
+    };
+}
+
+export const EditableFieldContainer = connect(undefined, mapDispatchToProps)(EditableField);

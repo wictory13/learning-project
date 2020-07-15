@@ -1,5 +1,7 @@
 import * as React from "react";
 import cn from './todoInput.less'
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
 
 interface TodoInputProps {
     onAddTodo: (value: string) => void
@@ -9,7 +11,7 @@ interface TodoInputState {
     value: string
 }
 
-export class TodoInput extends React.Component<TodoInputProps, TodoInputState> {
+class TodoInput extends React.Component<TodoInputProps, TodoInputState> {
     constructor(props: TodoInputProps) {
         super(props);
         this.state = {
@@ -36,3 +38,17 @@ export class TodoInput extends React.Component<TodoInputProps, TodoInputState> {
         }
     }
 }
+
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        onAddTodo: (value: string) => dispatch({
+            type: 'ADD_TODO',
+            payload: {
+                name: value
+            }
+        })
+    };
+}
+
+export const TodoInputContainer = connect(undefined, mapDispatchToProps)(TodoInput);
