@@ -1,20 +1,23 @@
-import {TodoAppActions, TodoAppState} from "./types";
+import { TodoAppActions, TodoAppState } from "./types";
 
-export function todoApp(state: TodoAppState = {todos: [], id: 0}, action: TodoAppActions): TodoAppState {
+export function todoApp(state: TodoAppState = { todos: [], id: 0 }, action: TodoAppActions): TodoAppState {
     switch (action.type) {
-        case 'ADD_TODO': {
+        case "ADD_TODO": {
             return {
                 ...state,
-                todos: [...state.todos, {
-                    id: state.id + 1,
-                    value: action.payload.name,
-                    isDone: false
-                }],
-                id: state.id + 1
+                todos: [
+                    ...state.todos,
+                    {
+                        id: state.id + 1,
+                        value: action.payload.name,
+                        isDone: false,
+                    },
+                ],
+                id: state.id + 1,
             };
         }
         case "EDIT_TODO": {
-            const currentIndex = state.todos.findIndex(todo => todo.id === action.payload.id);
+            const currentIndex = state.todos.findIndex((todo) => todo.id === action.payload.id);
             return {
                 ...state,
                 todos: [
@@ -24,47 +27,49 @@ export function todoApp(state: TodoAppState = {todos: [], id: 0}, action: TodoAp
                         value: action.payload.newValue,
                     },
                     ...state.todos.slice(currentIndex + 1),
-                ]
+                ],
             };
         }
         case "DELETE_TODO": {
-            const currentIndex = state.todos.findIndex(todo => todo.id === action.payload.id);
+            const currentIndex = state.todos.findIndex((todo) => todo.id === action.payload.id);
             return {
                 ...state,
                 todos: [
                     ...state.todos.slice(0, currentIndex),
-                    ...state.todos.slice(state.todos.findIndex(todo => todo.id === action.payload.id) + 1),
-                ]
+                    ...state.todos.slice(state.todos.findIndex((todo) => todo.id === action.payload.id) + 1),
+                ],
             };
         }
         case "CHECK_TODO": {
-            const currentIndex = state.todos.findIndex(todo => todo.id === action.payload.id);
+            const currentIndex = state.todos.findIndex((todo) => todo.id === action.payload.id);
             return {
                 ...state,
                 todos: [
                     ...state.todos.slice(0, currentIndex),
                     {
                         ...state.todos[currentIndex],
-                        isDone: !state.todos[currentIndex].isDone
+                        isDone: !state.todos[currentIndex].isDone,
                     },
                     ...state.todos.slice(currentIndex + 1),
-                ]
+                ],
             };
         }
         case "CHECK_ALL_TODOS": {
-            const doneTodos = state.todos.filter(todo => todo.isDone);
-            let newTodos = [];
+            const doneTodos = state.todos.filter((todo) => todo.isDone);
+            const newTodos = [];
             if (doneTodos.length === state.todos.length) {
                 for (const todo of state.todos) {
                     newTodos.push({
-                        ...todo, isDone: false
+                        ...todo,
+                        isDone: false,
                     });
                 }
             } else {
                 for (const todo of state.todos) {
                     if (!todo.isDone) {
                         newTodos.push({
-                            ...todo, isDone: true
+                            ...todo,
+                            isDone: true,
                         });
                     } else {
                         newTodos.push(todo);
@@ -73,15 +78,15 @@ export function todoApp(state: TodoAppState = {todos: [], id: 0}, action: TodoAp
             }
             return {
                 ...state,
-                todos: newTodos
-            }
+                todos: newTodos,
+            };
         }
         case "DELETE_DONE_TODOS": {
-            let undoneTodos = state.todos.filter(todo => !todo.isDone);
+            const undoneTodos = state.todos.filter((todo) => !todo.isDone);
             return {
                 ...state,
-                todos:  undoneTodos
-            }
+                todos: undoneTodos,
+            };
         }
         default:
             return state;
